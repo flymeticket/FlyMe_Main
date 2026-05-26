@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* ─── Color tokens — FlyMyTicket palette ──────────────────────
+ * Single-theme (light) only — dark mode has been removed.
+ * Brand royal blue #1B1FE3 powers the hero, header bars, and CTAs.
+ * Magenta #A039F0 is the .com accent. */
+
+:root {
+  /* Surfaces — FlyMyTicket palette.
+   *   --bg          : deep navy page (Skyscanner-style backdrop)
+   *   --bg-soft     : white card surface for content sections beneath the hero
+   *   --bg-contrast : the brand royal blue (#1B1FE3) used as a strong accent
+   *
+   * The page is dark navy near the hero, content sections below stay white.
+   * Sections that need a light surface set bg-white explicitly. */
+  --bg:            255 255 255;          /* page surface (sections)         */
+  --bg-soft:       247 248 251;          /* faint blue-grey for elevated UI */
+  --bg-contrast:   27 31 227;            /* FlyMyTicket royal blue (#1B1FE3) */
+
+  /* Text */
+  --fg:            22 22 22;             /* text primary         */
+  --fg-muted:      91 100 111;           /* text secondary       */
+  --fg-on-contrast:255 255 255;          /* text on blue surfaces */
+
+  /* Lines / borders */
+  --border:        193 199 207;          /* line                 */
+  --border-strong: 161 167 175;
+
+  /* Brand accent — same blue as bg-contrast, plus a darker hover and the
+   * purple .com accent from the logo. */
+  --accent:        27 31 227;            /* primary CTA */
+  --accent-hover:  21 24 195;
+  --accent-fg:     255 255 255;
+  --brand-purple:  160 57 240;           /* .com mark accent (#A039F0) */
+
+  /* Hero text colour for headline accents on the navy hero */
+  --text-hero:     27 31 227;
+}
+
+@theme inline {
+  --color-bg:            rgb(var(--bg));
+  --color-bg-soft:       rgb(var(--bg-soft));
+  --color-bg-contrast:   rgb(var(--bg-contrast));
+  --color-fg:            rgb(var(--fg));
+  --color-fg-muted:      rgb(var(--fg-muted));
+  --color-fg-on-contrast: rgb(var(--fg-on-contrast));
+  --color-border-token:  rgb(var(--border));
+  --color-border-strong: rgb(var(--border-strong));
+  --color-accent-bg:     rgb(var(--accent));
+  --color-accent-hover:  rgb(var(--accent-hover));
+  --color-accent-fg:     rgb(var(--accent-fg));
+  --color-hero:          rgb(var(--text-hero));
+  --color-brand-purple:  rgb(var(--brand-purple));
+
+  /* Backpack border-radius scale (px values) */
+  --radius-xs:  0.25rem;   /* 4  */
+  --radius-sm:  0.5rem;    /* 8  */
+  --radius-md:  0.75rem;   /* 12 */
+  --radius-lg:  1.5rem;    /* 24 */
+  --radius-xl:  2.5rem;    /* 40 */
+}
+
+/* Backpack font stack. Skyscanner Relative is proprietary; Inter (loaded via
+ * next/font in layout.tsx) plus the system fallback gets us 95% of the look. */
+:root {
+  --font-base:
+    'Inter',
+    -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue',
+    sans-serif;
+}
+
+html, body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: var(--font-base);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; /* Inter alts that
+                                                             nudge it closer
+                                                             to humanist sans
+                                                             like SK Relative */
+}
+
+/* Tighter heading rhythm — Backpack uses leading-tight at large sizes. */
+h1, h2, h3 { letter-spacing: -0.01em; }
+h1 { letter-spacing: -0.02em; }
+
+/* Takeoff animation — plane climbs from below the strip up to above it.
+ * Off-screen at both endpoints so the loop reset is invisible.
+ * Anchors the plane to the BOTTOM of the strip and animates `bottom`. */
+@keyframes takeoff {
+  0%   { bottom: -30px; }
+  100% { bottom: calc(100% + 30px); }
+}
+
+/* Three-dot loader used in the boarding-pass widget while we hand off to
+ * Skyscanner. Each dot is staggered by 0.2s in JS so the wave reads as a
+ * "thinking" pulse. */
+@keyframes dotpulse {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40%           { opacity: 1;    transform: translateY(-2px); }
+}
+
+/* Spin keyframe for the boarding-pass "searching" spinner. Tailwind v4
+ * provides `animate-spin` but we need the raw keyframe name available so
+ * inline `style={{ animation: 'spin ...' }}` works too. */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
