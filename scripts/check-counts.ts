@@ -4,7 +4,9 @@ async function main() {
   const sb = getSupabaseAdmin();
 
   console.log('By status (all routes):');
-  for (const s of ['pending', 'generating', 'published', 'failed']) {
+  // `as const` narrows the array to the literal union expected by Supabase's
+  // typed `.eq()` (GenerationStatus), otherwise TS infers plain `string`.
+  for (const s of ['pending', 'generating', 'published', 'failed'] as const) {
     const { count } = await sb
       .from('routes').select('id', { count: 'exact', head: true })
       .eq('status', s);
